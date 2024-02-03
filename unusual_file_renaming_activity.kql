@@ -1,8 +1,0 @@
-// Unusual File Renaming Activity
-// AI Generated Rule for detecting unusual file renaming activity
-// Monitor for patterns indicative of scripting or bulk file operations that could relate to data staging or tampering
-
-DeviceFileEvents
-| where ActionType == "FileRenamed"
-| summarize RenameOperations=count(), UniqueMachines=dcount(DeviceId) by InitiatingProcessFileName, FileName, DeviceId
-| where RenameOperations > 20 // Threshold to highlight potential suspect behavior, adjust as necessary

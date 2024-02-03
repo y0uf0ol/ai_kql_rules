@@ -1,0 +1,8 @@
+// Networking Communication via Bitsadmin Detection
+// Note: This is an AI Generated Rule use with caution
+// https://thedfirreport.com/2022/09/12/dead-or-alive-an-emotet-story/
+// MITRE Tactic and Technique: Command and Control, T1105
+DeviceNetworkEvents
+| where ProcessFileName == "bitsadmin.exe" and RemoteUrl != ""
+| summarize CommunicationAttempts = count(), UniqueDevices = dcount(DeviceId) by RemoteUrl, ProcessFileName, DeviceId
+| where CommunicationAttempts > 1

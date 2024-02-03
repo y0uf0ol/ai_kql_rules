@@ -1,7 +1,0 @@
-// Query Title: Anomalous PowerShell Execution
-// AI Generated Rule
-// Spots unusual PowerShell command lines, indicative of obfuscation or malicious intent.
-DeviceProcessEvents
-| where FileName == "powershell.exe" or FileName == "pwsh.exe"
-| where ProcessCommandLine contains "-enc" // Short for encoded commands, often used to hide malicious scripts.
-| project Timestamp, DeviceName, FileName, ProcessCommandLine, InitiatingProcessFileName

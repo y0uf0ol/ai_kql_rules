@@ -1,6 +1,0 @@
-// Query Title: Detect NetSupport Manager Execution
-// AI Generated Rule
-// Detects execution of NetSupport Manager, which is commonly abused in intrusions.
-DeviceProcessEvents
-| where FileName == "netsupport.exe"
-| project Timestamp, DeviceName, FileName, ProcessCommandLine, InitiatingProcessFileName, InitiatingProcessCommandLine

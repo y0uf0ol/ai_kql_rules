@@ -1,0 +1,9 @@
+// Creation of Scheduled Tasks for Persistence
+// Note: This is an AI Generated Rule use with caution
+// https://thedfirreport.com/2024/01/29/buzzing-on-christmas-eve-trigona-ransomware-in-3-hours/
+// MITRE Tactic and Technique: T1053.005 - Scheduled Task/Job: Scheduled Task
+DeviceProcessEvents
+| where FileName == "schtasks.exe" or InitiatingProcessFileName == "schtasks.exe"
+| where CommandLine contains "/create" or CommandLine contains "/change" or CommandLine contains "/run"
+| summarize TaskCreationAttempts=count(), UniqueMachines=dcount(DeviceId) by DeviceId, CommandLine
+| where TaskCreationAttempts > 1 // Threshold for suspicious task creation or modification, adjust based on usage

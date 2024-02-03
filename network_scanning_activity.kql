@@ -1,0 +1,8 @@
+// Network Scanning Activity
+// Note: This is an AI Generated Rule use with caution
+// https://thedfirreport.com/2024/01/29/buzzing-on-christmas-eve-trigona-ransomware-in-3-hours/
+// MITRE Tactic and Technique: T1046 - Network Service Scanning
+DeviceNetworkEvents
+| where InitiatingProcessFileName contains "nmap" or CommandLine contains "nmap"
+| summarize ScanningAttempts=count(), UniqueMachines=dcount(DeviceId) by DeviceId, RemoteIP, LocalPort, RemotePort
+| where ScanningAttempts > 10 // Threshold for significant scanning activity, adjust based on network baseline

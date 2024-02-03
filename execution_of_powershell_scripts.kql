@@ -1,0 +1,9 @@
+// Execution of PowerShell Scripts
+// Note: This is an AI Generated Rule use with caution
+// https://thedfirreport.com/2024/01/29/buzzing-on-christmas-eve-trigona-ransomware-in-3-hours/
+// MITRE Tactic and Technique: T1059.001 - Command and Scripting Interpreter: PowerShell
+DeviceProcessEvents
+| where FileName == "powershell.exe" or InitiatingProcessFileName == "powershell.exe"
+| where CommandLine contains "-enc" or CommandLine contains "IEX" or CommandLine contains "Invoke-Expression"
+| summarize ExecutionCount=count(), UniqueMachines=dcount(DeviceId) by DeviceId, CommandLine
+| where ExecutionCount > 1 // Threshold for suspicious PowerShell execution, adjust based on usage

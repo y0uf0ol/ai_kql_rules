@@ -1,7 +1,0 @@
-// Query Title: Usage of Windows Script Host (wscript.exe)
-// AI Generated Rule
-// Flags execution of Windows Script Host, a common tool in scripting attacks, possibly related to initial payload delivery or further scripting.
-DeviceProcessEvents
-| where FileName == "wscript.exe" or FileName == "cscript.exe"
-| where ProcessCommandLine contains "download" or ProcessCommandLine contains "execute" // Look for keywords indicative of malicious use.
-| project Timestamp, DeviceName, FileName, ProcessCommandLine

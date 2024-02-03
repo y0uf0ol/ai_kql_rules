@@ -1,0 +1,9 @@
+// Mispadu Infostealer - Malicious Document Detection
+// Note: This is an AI Generated Rule, use with caution
+// https://unit42.paloaltonetworks.com/mispadu-infostealer-variant/
+// MITRE Tactic and Technique: Initial Access, T1204
+DeviceFileEvents
+| where FileName has_any (".doc", ".docx") and InitiatingProcessCommandLine contains "Winword.exe"
+| where FolderPath contains "\\\\AppData\\\\Local\\\\Temp\\" 
+| summarize MaliciousDocumentAttempts=count(), UniqueUsers=dcount(UserName) by DeviceName, FileName, InitiatingProcessCommandLine, UserName
+| where MaliciousDocumentAttempts > 1 // Threshold to filter out false positives, adjust as necessary

@@ -1,0 +1,8 @@
+// Registry Persistence Mechanism Detection
+// Note: This is an AI Generated Rule use with caution
+// https://thedfirreport.com/2022/09/12/dead-or-alive-an-emotet-story/
+// MITRE Tactic and Technique: Persistence, T1547.001
+DeviceRegistryEvents
+| where RegistryKey contains "Software\\Microsoft\\Windows\\CurrentVersion\\Run" and RegistryValueName == "OneDriveUpdate"
+| summarize Count = count(), UniqueDevices = dcount(DeviceId) by RegistryKey, RegistryValueName, DeviceId
+| where Count > 1 // Looking for multiple occurrences, adjust threshold as needed

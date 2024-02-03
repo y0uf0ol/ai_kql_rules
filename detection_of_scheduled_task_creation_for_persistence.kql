@@ -1,0 +1,8 @@
+// Detection of Scheduled Task Creation for Persistence
+// Note: This is an AI Generated Rule use with caution
+// https://thedfirreport.com/2022/09/12/dead-or-alive-an-emotet-story/
+// MITRE Tactic and Technique: Persistence, T1053.005
+DeviceProcessEvents
+| where ProcessCommandLine contains "schtasks" and ProcessCommandLine contains "/CREATE"
+| summarize TaskCreations = count(), UniqueDevices = dcount(DeviceId) by ProcessCommandLine, FileName, DeviceId
+| where TaskCreations > 1 // Identifies multiple task creations, adjust threshold as necessary

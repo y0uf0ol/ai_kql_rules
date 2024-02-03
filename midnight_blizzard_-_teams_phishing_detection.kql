@@ -1,0 +1,8 @@
+// Midnight Blizzard - Teams Phishing Detection
+// Note: This is an AI Generated Rule, use with caution
+// Reference: https://www.microsoft.com/en-us/security/blog/2023/08/02/midnight-blizzard-conducts-targeted-social-engineering-over-microsoft-teams/
+// MITRE Tactic and Technique: T1566 (Phishing), T1566.002 (Spear Phishing Link)
+DeviceNetworkEvents
+| where RemoteUrl contains "teams.live.com" or RemoteUrl contains "microsoftonline.com" and RemoteUrl contains "redirect" and RemoteUrl contains "login"
+| summarize AttemptCount=count(), UniqueUsers=dcount(AccountName) by RemoteUrl, AccountName, DeviceId
+| where AttemptCount > 1 // Threshold for suspect activity, adjust based on observation

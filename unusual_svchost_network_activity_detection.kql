@@ -1,0 +1,9 @@
+// Unusual Svchost Network Activity Detection
+// Note: This is an AI Generated Rule use with caution
+// https://unit42.paloaltonetworks.com/threat-brief-ivanti-cve-2023-46805-cve-2024-21887/
+// MITRE Tactic and Technique: Command and Control, T1071.001 - Application Layer Protocol
+DeviceNetworkEvents
+| where InitiatingProcessFileName == "svchost.exe"
+| where RemotePort != 80 and RemotePort != 443
+| summarize UnusualNetworkActivity=count(), AffectedDevices=dcount(DeviceId) by RemoteUrl, RemoteIpAddress, DeviceId
+| where UnusualNetworkActivity > 5

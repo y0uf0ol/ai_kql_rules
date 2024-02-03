@@ -1,7 +1,0 @@
-// Scheduled Task Creation for Persistence
-// AI Generated Rule for detecting the creation of scheduled tasks used for persistence
-// This pattern identifies the usage of `schtasks` command for potential malicious scheduling
-
-DeviceProcessEvents
-| where FileName == "schtasks.exe" and ProcessCommandLine has "/create"
-| project DeviceId, ProcessCommandLine, Timestamp

@@ -1,0 +1,8 @@
+// Detection of Emotet DLL Execution via rundll32
+// Note: This is an AI Generated Rule use with caution
+// https://thedfirreport.com/2022/09/12/dead-or-alive-an-emotet-story/
+// MITRE Tactic and Technique: Execution, T1055.002
+DeviceProcessEvents
+| where FileName == "rundll32.exe" and (ProcessCommandLine contains "dll" or ProcessCommandLine contains "currentversion")
+| summarize Executions = count(), UniqueDevices = dcount(DeviceId) by ProcessCommandLine, FileName, DeviceId
+| where Executions > 1 // Threshold based on normal behavior, adjust accordingly

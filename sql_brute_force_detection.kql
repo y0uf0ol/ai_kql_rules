@@ -1,9 +1,0 @@
-// SQL Brute Force Detection
-// AI Generated Rule for detecting potential SQL brute force attack activities
-// Note: Adjust threshold values as per the environmental norm
-
-DeviceProcessEvents
-| where ProcessCommandLine contains "sqlcmd" or ProcessCommandLine contains "osql"
-| where ProcessCommandLine contains "-S" // targeting SQL Server
-| summarize AttemptCount=count(), UniqueMachines=dcount(DeviceId) by ProcessCommandLine, InitiatingProcessFileName, InitiatingProcessCommandLine, DeviceId
-| where AttemptCount > 10 // Threshold for brute force attempts, adjust based on baseline

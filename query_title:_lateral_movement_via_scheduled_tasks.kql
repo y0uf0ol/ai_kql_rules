@@ -1,7 +1,0 @@
-// Query Title: Lateral Movement via Scheduled Tasks
-// AI Generated Rule
-// Detects the creation of scheduled tasks on remote systems, a sign of lateral movement.
-DeviceProcessEvents
-| where ProcessCommandLine contains "schtasks" and 
-  (ProcessCommandLine contains "/create" and ProcessCommandLine contains "/S")
-| project Timestamp, DeviceName, ProcessCommandLine, InitiatingProcessFileName

@@ -1,0 +1,8 @@
+// Mispadu Infostealer - Suspicious Registry Modification for Persistence
+// Note: This is an AI Generated Rule, use with caution
+// https://unit42.paloaltonetworks.com/mispadu-infostealer-variant/
+// MITRE Tactic and Technique: Persistence, T1112
+DeviceRegistryEvents
+| where RegistryKey has "Software\\\\Microsoft\\\\Windows\\\\CurrentVersion\\\\Run" and RegistryValueName has_any ("svchost", "cmd.exe")
+| summarize SuspiciousRegistryMods=count(), UniqueMachines=dcount(DeviceId) by DeviceId, RegistryKey, RegistryValueName, RegistryValueData
+| where SuspiciousRegistryMods > 2 // Threshold for unusual registry modifications, adjust based on baseline understanding

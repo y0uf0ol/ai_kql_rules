@@ -1,0 +1,8 @@
+// Emotet Infection Detection via PowerShell Execution
+// Note: This is an AI Generated Rule use with caution
+// https://thedfirreport.com/2022/09/12/dead-or-alive-an-emotet-story/
+// MITRE Tactic and Technique: Execution, T1059.001
+DeviceProcessEvents
+| where FileName == "powershell.exe" and ProcessCommandLine has "IEX"
+| summarize Count = count(), UniqueDevices = dcount(DeviceId) by FileName, ProcessCommandLine, DeviceId
+| where Count > 1 // Multiple executions might indicate suspicious activity, adjust based on baseline

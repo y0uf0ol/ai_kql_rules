@@ -1,0 +1,9 @@
+// Midnight Blizzard - Suspicious TeamViewer Launch
+// Note: This is an AI Generated Rule, use with caution
+// Reference: https://www.microsoft.com/en-us/security/blog/2023/08/02/midnight-blizzard-conducts-targeted-social-engineering-over-microsoft-teams/
+// MITRE Tactic and Technique: T1219 (Remote Access Software), T1219.001 (TeamViewer)
+DeviceProcessEvents
+| where FileName == "TeamViewer.exe"
+| project DeviceId, AccountName, InitiatingProcessFileName, FileName, ProcessCommandLine, Timestamp
+| summarize LaunchCount=count(), UniqueLaunches=dcount(FileName) by DeviceId, AccountName
+| where LaunchCount > 5 // Indicative of unusual activity, adjust threshold as needed

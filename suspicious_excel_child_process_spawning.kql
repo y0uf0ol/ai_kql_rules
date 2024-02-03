@@ -1,0 +1,8 @@
+// Suspicious Excel Child Process Spawning
+// Note: This is an AI Generated Rule use with caution
+// https://thedfirreport.com/2022/09/12/dead-or-alive-an-emotet-story/
+// MITRE Tactic and Technique: Execution, T1204.002
+DeviceProcessEvents
+| where InitiatingProcessFileName =~ "excel.exe" and FileName =~ "powershell.exe"
+| summarize Count = count(), UniqueDevices = dcount(DeviceId) by InitiatingProcessFileName, FileName, DeviceId
+| where Count > 1 // Multiple instances may indicate malicious activity, adjust based on observations

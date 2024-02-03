@@ -1,0 +1,8 @@
+// Mispadu Infostealer - Suspicious PowerShell Activity
+// Note: This is an AI Generated Rule, use with caution
+// https://unit42.paloaltonetworks.com/mispadu-infostealer-variant/
+// MITRE Tactic and Technique: Execution, T1059.001
+DeviceProcessEvents
+| where ProcessCommandLine has "powershell.exe" and (ProcessCommandLine has "-Enc" or ProcessCommandLine has "IEX") and ProcessCommandLine has "Net.WebClient" 
+| summarize SuspiciousPSActivity=count(), UniqueMachines=dcount(DeviceId) by DeviceId, ProcessCommandLine, InitiatingProcessFileName
+| where SuspiciousPSActivity > 1 // Identifying potential misuse of PowerShell with threshold, adjust as necessary for environment

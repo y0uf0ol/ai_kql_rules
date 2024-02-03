@@ -1,0 +1,8 @@
+// Midnight Blizzard - Anomalous Office Document Execution
+// Note: This is an AI Generated Rule, use with caution
+// Reference: https://www.microsoft.com/en-us/security/blog/2023/08/02/midnight-blizzard-conducts-targeted-social-engineering-over-microsoft-teams/
+// MITRE Tactics and Techniques: T1204 (User Execution), T1204.002 (Malicious File)
+DeviceFileEvents
+| where FileName has_any(".doc", ".docx", ".xls", ".xlsx", ".ppt", ".pptx") and InitiatingProcessFileName !in ("winword.exe", "excel.exe", "powerpnt.exe")
+| summarize FileOpenCount=count(), UniqueFiles=dcount(FileName) by DeviceId, AccountName, FileName, InitiatingProcessFileName
+| where FileOpenCount >= 3 // Threshold for unusual file execution pattern, adjust as necessary
