@@ -1,0 +1,6 @@
+// Query Title: Network Traffic to Unusual Ports
+// AI Generated Rule
+// Identifies network connections from devices to uncommon ports, which may indicate NetSupport's communication.
+DeviceNetworkEvents
+| where RemotePort in (5405, 5410) // Typical NetSupport ports, adjust as needed
+| project Timestamp, DeviceName, RemoteIP, RemotePort, InitiatingProcessFileName
