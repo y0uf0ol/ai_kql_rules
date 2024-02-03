@@ -1,0 +1,9 @@
+// Detection of Suspicious Registry Modification for Bypassing Constrained Language Mode
+// Note: This is an AI Generated Rule use with caution
+// Detection of suspicious registry modifications related to Constrained Language Mode bypass
+// Reference: https://samples.vx-underground.org/Papers/Windows/Evasion%20-%20EDR%20and%20AV%20specific/2022-09-27%20-%20Constrained%20Language%20Mode%20Bypass%20When%20__PSLockDownPolicy%20Is%20Used.pdf
+DeviceRegistryEvents
+| where RegistryKey has "Software\\Microsoft\\Windows\\CurrentVersion\\Policies\\System" and RegistryValueName == "__PSLockDownPolicy"
+| where ActionType == "RegistryValueSet" and NewRegistryValueData != "4" // Not setting CLM
+| summarize ModificationCount = count(), UniqueDevices = dcount(DeviceId) by DeviceName, RegistryKey, RegistryValueName, NewRegistryValueData
+| where ModificationCount > 1 // Threshold for suspicious modifications, adjust based on baseline

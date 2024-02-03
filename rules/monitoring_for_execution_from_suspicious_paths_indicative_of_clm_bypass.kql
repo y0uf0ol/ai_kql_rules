@@ -1,0 +1,9 @@
+// Monitoring for Execution from Suspicious Paths Indicative of CLM Bypass
+// Note: This is an AI Generated Rule use with caution
+// Monitoring execution from suspicious paths that may indicate an attempt to bypass Constrained Language Mode
+// Reference: https://samples.vx-underground.org/Papers/Windows/Evasion%20-%20EDR%20and%20AV%20specific/2022-09-27%20-%20Constrained%20Language%20Mode%20Bypass%20When%20__PSLockDownPolicy%20Is%20Used.pdf
+DeviceFileEvents
+| where FolderPath has_any ("C:\\Windows\\Temp\\", "C:\\PerfLogs\\", "C:\\Users\\Public\\") and (FileName endswith ".exe" or FileName endswith ".dll")
+| where InitiatingProcessFileName =~ "powershell.exe" or InitiatingProcessFileName =~ "pwsh.exe"
+| summarize SuspiciousExecutions=count(), UniqueFiles=dcount(FileName) by DeviceName, FolderPath, FileName, InitiatingProcessCommandLine
+| where SuspiciousExecutions > 1 // Threshold for suspicious executions, adjust based on baseline

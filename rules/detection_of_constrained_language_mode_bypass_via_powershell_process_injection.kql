@@ -1,0 +1,9 @@
+// Detection of Constrained Language Mode Bypass via PowerShell Process Injection
+// Note: This is an AI Generated Rule use with caution
+// Detection of attempts to bypass Constrained Language Mode via process injection in PowerShell
+// Reference: https://samples.vx-underground.org/Papers/Windows/Evasion%20-%20EDR%20and%20AV%20specific/2022-09-27%20-%20Constrained%20Language%20Mode%20Bypass%20When%20__PSLockDownPolicy%20Is%20Used.pdf
+DeviceProcessEvents
+| where FileName =~ "powershell.exe" or FileName =~ "pwsh.exe"
+| where ProcessCommandLine has "Add-Type" and (ProcessCommandLine has "-pinvoke" or ProcessCommandLine has "System.Runtime.InteropServices.Marshal::Copy")
+| summarize InjectionAttempts=count(), UniqueProcesses=dcount(ProcessId) by DeviceName, FileName, ProcessCommandLine, InitiatorProcessName, InitiatorProcessCommandLine
+| where InjectionAttempts > 1 // Threshold for suspicious attempts, adjust based on baseline
