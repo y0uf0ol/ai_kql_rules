@@ -1,0 +1,12 @@
+// Network Beacon Detection via Rare Processes
+// AI Generated Rule for detecting potential network beaconing from rare processes
+// Useful for identifying C2 activity or exfiltration attempts
+
+DeviceInfo
+| join kind=inner (
+    DeviceNetworkEvents
+    | where ActionType == "ConnectionSuccess" and RemotePort == 443 // Focus on SSL/TLS for stealth
+    | summarize Count=count() by DeviceId, InitiatingProcessFileName
+    | where Count > 1000 // High volume to identify beaconing, adjust based on baseline
+) on DeviceId
+| project DeviceId, InitiatingProcessFileName, Count

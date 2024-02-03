@@ -1,0 +1,9 @@
+// Unusual PowerShell Download
+// AI Generated Rule for detecting unusual PowerShell download commands indicative of malicious activity
+// Filter according to common malicious indicators within PowerShell commands
+
+DeviceProcessEvents
+| where FileName == "powershell.exe"
+| where ProcessCommandLine has "Net.WebClient" or ProcessCommandLine has "DownloadFile" or ProcessCommandLine has "IEX" or ProcessCommandLine has "Invoke-WebRequest"
+| summarize Count= count(), UniqueMachines=dcount(DeviceId) by ProcessCommandLine, DeviceId
+| where Count > 5 // Adjust threshold based on environment specifics
