@@ -6,12 +6,6 @@ Welcome to the `ai_kql_rules` GitHub repository, an experimental platform design
 
 This project is at the intersection of cutting-edge AI technology and cybersecurity, aiming to automate the generation of detection rules by leveraging the analytical prowess of GPT-4. It represents a novel approach to understanding and responding to the evolving threat landscape by analyzing textual content and generating KQL (Kusto Query Language) rules that can be used for threat detection in environments monitored by tools like Microsoft Defender.
 
-## Features
-
-- **Automated Rule Generation**: Utilize GPT-4 to analyze cybersecurity articles and reports to generate relevant KQL detection rules.
-- **Experimentation Platform**: A sandbox environment for cybersecurity professionals and enthusiasts to test the limits of AI in rule generation.
-- **Community-Driven Insights**: Contributions from the community to improve rule accuracy and relevance.
-
 ## Disclaimer
 
 Please note that all content in this repository is AI-generated and intended for experimental use only. This project is designed for educational and testing purposes, showcasing the potential of AI in cybersecurity. It is not recommended to directly implement these rules in a production environment without thorough review and testing by cybersecurity professionals.
