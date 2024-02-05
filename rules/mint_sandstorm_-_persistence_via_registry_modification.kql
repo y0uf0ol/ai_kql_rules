@@ -1,0 +1,7 @@
+// Mint Sandstorm - Persistence via Registry Modification
+// Note: This is an AI Generated Rule use with caution.
+// https://samples.vx-underground.org/APTs/2024/2024.01.17%20-%20New%20TTPs%20observed%20in%20Mint%20Sandstorm%20campaign%20targeting%20high-profile%20individuals%20at%20universities%20and%20research%20orgs/Paper/microsoft.com-New%20TTPs%20observed%20in%20Mint%20Sandstorm%20campaign%20targeting%20high-profile%20individuals%20at%20universities%20and%20r.pdf
+// MITRE Tactic: Persistence, Technique: Boot or Logon Autostart Execution: Registry Run Keys / Startup Folder T1547.001
+DeviceRegistryEvents
+| where RegistryKey has_any("HKEY_CURRENT_USER\\Software\\Microsoft\\Windows\\CurrentVersion\\Run", "HKEY_LOCAL_MACHINE\\Software\\Microsoft\\Windows\\CurrentVersion\\Run")
+| summarize ModificationsCount=count(), UniqueMachines=dcount(DeviceId) by RegistryKey, RegistryValueName, DeviceId

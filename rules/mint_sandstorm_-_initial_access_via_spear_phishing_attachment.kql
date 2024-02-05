@@ -1,0 +1,8 @@
+// Mint Sandstorm - Initial Access via Spear Phishing Attachment
+// Note: This is an AI Generated Rule use with caution.
+// https://samples.vx-underground.org/APTs/2024/2024.01.17%20-%20New%20TTPs%20observed%20in%20Mint%20Sandstorm%20campaign%20targeting%20high-profile%20individuals%20at%20universities%20and%20research%20orgs/Paper/microsoft.com-New%20TTPs%20observed%20in%20Mint%20Sandstorm%20campaign%20targeting%20high-profile%20individuals%20at%20universities%20and%20r.pdf
+// MITRE Tactic: Initial Access, Technique: Spearphishing Attachment T1566.001
+EmailEvents
+| where EmailSubject has_any("invoice", "receipt", "urgent", "required action", "confidential") // Add more relevant keywords
+| where EmailAttachmentInfo contains ".doc" or EmailAttachmentInfo contains ".pdf" or EmailAttachmentInfo contains ".xls"
+| summarize AttachmentsCount=count(), UniqueSenders=dcount(SenderMailFrom), UniqueRecipients=dcount(RecipientEmailAddress) by EmailSubject, SenderMailFrom, RecipientEmailAddress

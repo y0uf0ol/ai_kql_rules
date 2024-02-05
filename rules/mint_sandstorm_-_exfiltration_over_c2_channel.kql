@@ -1,0 +1,8 @@
+// Mint Sandstorm - Exfiltration Over C2 Channel
+// Note: This is an AI Generated Rule use with caution.
+// https://samples.vx-underground.org/APTs/2024/2024.01.17%20-%20New%20TTPs%20observed%20in%20Mint%20Sandstorm%20campaign%20targeting%20high-profile%20individuals%20at%20universities%20and%20research%20orgs/Paper/microsoft.com-New%20TTPs%20observed%20in%20Mint%20Sandstorm%20campaign%20targeting%20high-profile%20individuals%20at%20universities%20and%20r.pdf
+// MITRE Tactic: Exfiltration, Technique: Exfiltration Over C2 Channel T1041
+DeviceNetworkEvents
+| where RemoteUrl contains "http" or RemoteUrl contains "https"
+| where RemotePort == 80 or RemotePort == 443 // Focusing on standard HTTP/HTTPS ports
+| summarize DataTransferVolume=sum(BytesSent), UniqueConnections=dcount(RemoteIp), AttemptCount=count() by DeviceId, RemoteUrl, RemoteIp

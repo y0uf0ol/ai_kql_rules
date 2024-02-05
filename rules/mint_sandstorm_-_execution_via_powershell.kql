@@ -1,0 +1,8 @@
+// Mint Sandstorm - Execution via PowerShell
+// Note: This is an AI Generated Rule use with caution.
+// https://samples.vx-underground.org/APTs/2024/2024.01.17%20-%20New%20TTPs%20observed%20in%20Mint%20Sandstorm%20campaign%20targeting%20high-profile%20individuals%20at%20universities%20and%20research%20orgs/Paper/microsoft.com-New%20TTPs%20observed%20in%20Mint%20Sandstorm%20campaign%20targeting%20high-profile%20individuals%20at%20universities%20and%20r.pdf
+// MITRE Tactic: Execution, Technique: Command and Scripting Interpreter: PowerShell T1059.001
+DeviceProcessEvents
+| where ProcessCommandLine has "powershell.exe" or ProcessCommandLine has "pwsh.exe"
+| where ProcessCommandLine contains "-Exec" or ProcessCommandLine contains "-Command" or ProcessCommandLine contains "DownloadFile"
+| summarize AttemptCount=count(), UniqueMachines=dcount(DeviceId) by ProcessCommandLine, InitiatingProcessFileName, InitiatingProcessCommandLine, DeviceId
