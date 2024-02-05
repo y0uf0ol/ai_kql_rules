@@ -1,0 +1,10 @@
+// AnyDesk Software Update or Download Events
+// Note: This is an AI Generated Rule, use with caution
+// https://cyberdom.blog/2024/02/03/proactive-response-any-breach-anydesk-incident/
+// MITRE Tactic and Technique: Execution (T1204)
+DeviceFileEvents
+| where FileName =~ "AnyDesk.exe" and (FolderPath contains @"\Temp\" or FolderPath contains @"\Downloads\")
+| where InitiatingProcessFileName in~ ("chrome.exe", "firefox.exe", "iexplore.exe", "edge.exe") // Filtering based on typical browsers
+| project Timestamp, DeviceId, InitiatingProcessFileName, FileName, FolderPath, InitiatingProcessAccountName
+| summarize DownloadCount=count() by DeviceId, FolderPath, InitiatingProcessFileName, InitiatingProcessAccountName
+| order by DownloadCount desc

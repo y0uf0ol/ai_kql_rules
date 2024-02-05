@@ -1,0 +1,14 @@
+// Anomalous AnyDesk Usage
+// Note: This is an AI Generated Rule, use with caution
+// https://cyberdom.blog/2024/02/03/proactive-response-any-breach-anydesk-incident/
+// MITRE Tactic and Technique: Defense Evasion (T1036)
+DeviceProcessEvents
+| where ProcessCommandLine has "AnyDesk.exe"
+| project DeviceId, InitiatingProcessAccountName, ProcessCommandLine, FileName, Timestamp
+| join kind=inner (
+    DeviceLoginEvents
+    | where ActionType == "UserLoggedIn"
+    | extend LoginTime=Timestamp
+) on DeviceId
+| where Timestamp < LoginTime // Looking for AnyDesk execution before legitimate user login
+| summarize AnomalousUsageByDevice=count() by DeviceId, InitiatingProcessAccountName

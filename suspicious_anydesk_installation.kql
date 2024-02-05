@@ -1,0 +1,9 @@
+// Suspicious AnyDesk Installation
+// Note: This is an AI Generated Rule, use with caution
+// https://cyberdom.blog/2024/02/03/proactive-response-any-breach-anydesk-incident/
+// MITRE Tactic and Technique: Persistence (T1547)
+DeviceFileEvents
+| where FileName == "AnyDesk.exe" and FolderPath contains "Program Files (x86)"
+| where InitiatingProcessFileName !contains "AnyDesk.exe" // Filter out self-updates
+| summarize InstallationAttempts=count(), UniqueDevices=dcount(DeviceId) by InitiatingProcessFileName, FileName, FolderPath, DeviceId
+| order by InstallationAttempts desc

@@ -1,0 +1,9 @@
+// Unusual AnyDesk Execution
+// Note: This is an AI Generated Rule, use with caution
+// https://cyberdom.blog/2024/02/03/proactive-response-any-breach-anydesk-incident/
+// MITRE Tactic and Technique: Execution (T1204)
+DeviceProcessEvents
+| where FileName == "AnyDesk.exe"
+| where ProcessCommandLine !contains "/ad-auto-update" and ProcessCommandLine !contains "/ad-silent-update" // Filter out legitimate update commands
+| summarize UniqueExecutionCount=count(), UniqueUsers=dcount(InitiatingProcessAccountName) by ProcessCommandLine, FileName, InitiatingProcessFileName, DeviceId
+| order by UniqueExecutionCount desc

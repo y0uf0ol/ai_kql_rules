@@ -1,0 +1,9 @@
+// AnyDesk Network Connections
+// Note: This is an AI Generated Rule, use with caution
+// https://cyberdom.blog/2024/02/03/proactive-response-any-breach-anydesk-incident/
+// MITRE Tactic and Technique: Command and Control (T1071)
+DeviceNetworkEvents
+| where RemotePort == 6568 or RemotePort == 7070 // Known AnyDesk ports
+| where RemoteUrl contains "anydesk" or RemoteIp matches regex @"^.*\.anydesk\..*$" // Filter AnyDesk related traffic
+| summarize ConnectionAttempts=count(), UniqueDestinations=dcount(RemoteIp) by DeviceId, InitiatingProcessAccountName, RemoteUrl, RemoteIp, RemotePort
+| order by ConnectionAttempts desc
